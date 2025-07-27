@@ -11,6 +11,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{43
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{E1CA6B9F-23BD-4EAF-8F89-D1B9B7D04FC6}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\docker-main.yml = .github\workflows\docker-main.yml
+		.github\workflows\docker-tag.yml = .github\workflows\docker-tag.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,5 +35,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7F1BB494-8A9B-4CFE-A9F2-A1CF0AC66FB3} = {550FDFC5-4780-48CB-B024-2526B4DE4AA9}
 		{D9485F45-56E4-4DD3-95E7-C4992AC9209F} = {550FDFC5-4780-48CB-B024-2526B4DE4AA9}
+		{E1CA6B9F-23BD-4EAF-8F89-D1B9B7D04FC6} = {43B32ABB-3A6A-448F-915A-92B721FC351F}
 	EndGlobalSection
 EndGlobal
