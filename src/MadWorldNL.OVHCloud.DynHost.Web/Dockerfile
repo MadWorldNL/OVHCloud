@@ -3,8 +3,8 @@ ARG BUILDPLATFORM
 RUN apt-get update && apt-get install -y curl
 RUN mkdir /Storage \
     && chown -R $APP_UID:$APP_UID /Storage \
-    && chmod -R 755 /Storage \
-    
+    && chmod -R 755 /Storage
+
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
