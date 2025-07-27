@@ -58,14 +58,14 @@ public class OVHCloudClient(IOptions<DynHostSettings> settings, HttpClient httpC
 
         if (responseBody.Contains("Client::Unauthorized"))
         {
-            logger.LogError("Unauthorized: Authentication failed for {IpAddress} for {HostName}.", ipAddress, hostName);       
+            logger.LogError("Unauthorized: Authentication failed for {IpAddress} and {HostName}.", ipAddress, hostName);       
         }
 
         if (responseBody.Contains("Client::BadRequest"))
         {
             var responseJson = JsonSerializer.Deserialize<OVHCloudResponse>(responseBody);
             
-            logger.LogError("Bad Request: {Response}", responseJson!.Message);
+            logger.LogError("Bad Request for {IpAddress} and {HostName}: {Response}", ipAddress, hostName, responseJson!.Message);
         }
     }
 }
