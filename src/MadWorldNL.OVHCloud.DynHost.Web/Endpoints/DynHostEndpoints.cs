@@ -1,6 +1,5 @@
 using MadWorldNL.OVHCloud.DynHost.Lib.Contracts;
 using MadWorldNL.OVHCloud.DynHost.Web.Contracts;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MadWorldNL.OVHCloud.DynHost.Web.Endpoints;
 
@@ -26,8 +25,17 @@ public static class DynHostEndpoints
             await dynHost.CheckAndUpdateIpAddress();
             return new DefaultResponse()
             {
-                Message = ""
+                Message = "Ip address check is successful!"
             };
+        });
+
+        app.MapDelete("/ResetIpAddressCheck", (IIpAddressStorage storage) =>
+        {
+            storage.ResetLastKnownIpAddress();
+            return Task.FromResult(new DefaultResponse()
+            {
+                Message = "IP cache has been reset. The next check will send the current IP to DynHost."
+            });
         });
     }
 }

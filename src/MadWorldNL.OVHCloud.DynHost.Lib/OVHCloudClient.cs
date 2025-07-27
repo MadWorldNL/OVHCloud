@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using MadWorldNL.OVHCloud.DynHost.Lib.Contracts;
 using MadWorldNL.OVHCloud.DynHost.Lib.Domain;
 using Microsoft.Extensions.Logging;
@@ -35,7 +36,7 @@ public class OVHCloudClient(IOptions<DynHostSettings> settings, HttpClient httpC
             var response = await httpClient.SendAsync(request);
             var responseBody = await response.Content.ReadAsStringAsync();
 
-            LogResponse(responseBody, ipAddress, hostname, url);
+            LogResponse(responseBody, ipAddress, hostname);
         }
         catch (Exception ex)
         {
@@ -43,7 +44,7 @@ public class OVHCloudClient(IOptions<DynHostSettings> settings, HttpClient httpC
         }
     }
 
-    private void LogResponse(string responseBody, string ipAddress, string hostName, string url)
+    private void LogResponse(string responseBody, string ipAddress, string hostName)
     {
         if (responseBody.Contains("good"))
         {
@@ -55,14 +56,16 @@ public class OVHCloudClient(IOptions<DynHostSettings> settings, HttpClient httpC
             logger.LogInformation("IP address {IpAddress} for {HostName} is already current. No update needed.", ipAddress, hostName);
         }
 
-        if (responseBody.Contains("badauth"))
+        if (responseBody.Contains("Client::Unauthorized"))
         {
-            logger.LogError("Authentication failed for {IpAddress} for {HostName}.", ipAddress, hostName);       
+            logger.LogError("Unauthorized: Authentication failed for {IpAddress} for {HostName}.", ipAddress, hostName);       
         }
 
-        if (responseBody.Contains("notfqdn"))
+        if (responseBody.Contains("Client::BadRequest"))
         {
-            logger.LogError("Bad formatted request url {Url}", url);
+            var responseJson = JsonSerializer.Deserialize<OVHCloudResponse>(responseBody);
+            
+            logger.LogError("Bad Request: {Response}", responseJson!.Message);
         }
     }
 }

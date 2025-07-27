@@ -7,6 +7,7 @@ using MadWorldNL.OVHCloud.DynHost.Web.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient();
+builder.Services.AddHealthChecks();
 
 builder.Services.Configure<DynHostSettings>(
     builder.Configuration.GetSection(DynHostSettings.Key));
@@ -22,6 +23,7 @@ builder.Services.AddHostedService<RegulatorIpAddressUpdaterService>();
 
 var app = builder.Build();
 
+app.MapHealthChecks("/healthz");
 app.AddDynHostEndpoints();
 
 app.Run();

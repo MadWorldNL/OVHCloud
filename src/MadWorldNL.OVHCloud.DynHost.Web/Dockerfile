@@ -1,10 +1,17 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+﻿FROM --platform=$BUILDPLATFORM  mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+ARG BUILDPLATFORM
+RUN apt-get update && apt-get install -y curl
+RUN mkdir /Storage \
+    && chown -R $APP_UID:$APP_UID /Storage \
+    && chmod -R 755 /Storage \
+    
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+ARG BUILDPLATFORM
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/MadWorldNL.OVHCloud.DynHost.Web/MadWorldNL.OVHCloud.DynHost.Web.csproj", "MadWorldNL.OVHCloud.DynHost.Web/"]

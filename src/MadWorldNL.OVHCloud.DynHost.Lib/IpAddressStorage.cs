@@ -15,13 +15,14 @@ public class IpAddressStorage : IIpAddressStorage
     public IpAddressStorage(IOptions<StorageSettings> settings, ILogger<IpAddressStorage> logger)
     {
         _logger = logger;
-        
-        _filePath = Path.Combine(settings.Value.Path, _storagePath, "last-ip.json");
 
-        if (Directory.Exists(_storagePath)) return;
+        var fullStoragePath = Path.Combine(settings.Value.Path, _storagePath);
+        _filePath = Path.Combine(fullStoragePath, "last-ip.json");
+
+        if (Directory.Exists(fullStoragePath)) return;
         
-        _logger.LogInformation("'{Path}' not found, Creating the directory.", _storagePath);
-        Directory.CreateDirectory(_storagePath);
+        _logger.LogInformation("'{Path}' not found, Creating the directory.", fullStoragePath);
+        Directory.CreateDirectory(fullStoragePath);
     }
     
     public string GetLastKnownIpAddress()
@@ -50,7 +51,37 @@ public class IpAddressStorage : IIpAddressStorage
         var data = new IpAddressCache { IpAddress = ipAddress };
         var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
 
-        File.WriteAllText(_filePath, json);
+        try
+        {
+            File.WriteAllText(_filePath, json);
+        }
+        catch (Exception exception)
+        {
+            _logger.LogError(exception, "Failed to save the last known IP address.");
+            throw;
+        }
+
         _logger.LogInformation("Saved last known ip address to {FilePath}", _filePath);
+    }
+
+    public void ResetLastKnownIpAddress()
+    {
+        try
+        {
+            if (File.Exists(_filePath))
+            {
+                File.Delete(_filePath);
+                _logger.LogInformation("Deleted the last known IP address file at {FilePath}", _filePath);
+            }
+            else
+            {
+                _logger.LogInformation("No IP address file found to delete at {FilePath}", _filePath);
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete IP address file at {FilePath}", _filePath);
+            throw;
+        }
     }
 }

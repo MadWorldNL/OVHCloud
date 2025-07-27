@@ -1,0 +1,27 @@
+# docker compose -f docker-compose-dynhost.yml --build --force-recreate
+name: ovh-cloud-dynhost
+services:
+  web:
+    image: ghcr.io/madworldnl/ovhcloud-dynhost:latest
+    container_name: ovhcloud-dynhost-web
+    restart: always
+    build:
+      context: .
+      dockerfile: ./src/MadWorldNL.OVHCloud.DynHost.Web/Dockerfile
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:8080/healthz || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    environment:
+      - "DynHostSettings__HostNames__0=Test"
+      - "DynHostSettings__Username=Username"
+      - "DynHostSettings__Password=Password"
+      - "StorageSettings__Path=/Storage"
+    ports:
+      - "6500:8080"
+    volumes:
+      - api-storage:/Storage
+volumes:
+  api-storage:

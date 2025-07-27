@@ -4,4 +4,5 @@ public interface IIpAddressStorage
 {
     public string GetLastKnownIpAddress();
     public void SaveLastKnownIpAddress(string ipAddress);
+    public void ResetLastKnownIpAddress();
 }
