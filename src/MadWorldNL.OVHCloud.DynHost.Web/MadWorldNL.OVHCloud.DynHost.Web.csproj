@@ -17,4 +17,8 @@
       <ProjectReference Include="..\MadWorldNL.OVHCloud.DynHost.Lib\MadWorldNL.OVHCloud.DynHost.Lib.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="IpAddressStorage\last-ip.json" />
+    </ItemGroup>
+
 </Project>

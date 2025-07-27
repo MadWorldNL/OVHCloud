@@ -29,7 +29,7 @@ public static class DynHostEndpoints
             };
         });
 
-        app.MapDelete("/ResetIpAddressCheck", (IIpAddressStorage storage) =>
+        app.MapGet("/ResetIpAddressCheck", (IIpAddressStorage storage) =>
         {
             storage.ResetLastKnownIpAddress();
             return Task.FromResult(new DefaultResponse()
