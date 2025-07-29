@@ -1,4 +1,4 @@
-# docker compose -f docker-compose-dynhost.yml --build --force-recreate
+# docker compose -f docker-compose-dynhost.yml up --build --force-recreate
 name: ovh-cloud-dynhost
 services:
   web:
@@ -15,9 +15,10 @@ services:
       retries: 3
       start_period: 40s
     environment:
-      - "DynHostSettings__HostNames__0=Test"
-      - "DynHostSettings__Username=Username"
-      - "DynHostSettings__Password=Password"
+      - "DynHostSettings__HostNames__0=vpn.mad-world.nl"
+      - "DynHostSettings__HostNames__1=server.mad-world.nl"
+      - "DynHostSettings__Username=mad-world.nl-oveldman"
+      - "DynHostSettings__Password=XGI2nxzWKoOMN4JUBqB44ZsSPNkOO6"
       - "StorageSettings__Path=/Storage"
     ports:
       - "6500:8080"
