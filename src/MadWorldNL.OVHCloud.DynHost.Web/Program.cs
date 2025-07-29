@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
 builder.Services.AddHealthChecks();
 
+builder.Services.Configure<IpAddressSettings>(
+    builder.Configuration.GetSection(IpAddressSettings.Key));
 builder.Services.Configure<DynHostSettings>(
     builder.Configuration.GetSection(DynHostSettings.Key));
 builder.Services.Configure<StorageSettings>(
