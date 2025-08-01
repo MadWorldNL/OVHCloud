@@ -3,8 +3,13 @@ using MadWorldNL.OVHCloud.DynHost.Lib.Contracts;
 using MadWorldNL.OVHCloud.DynHost.Lib.Domain;
 using MadWorldNL.OVHCloud.DynHost.Web.Endpoints;
 using MadWorldNL.OVHCloud.DynHost.Web.Services;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddHttpClient();
 builder.Services.AddHealthChecks();

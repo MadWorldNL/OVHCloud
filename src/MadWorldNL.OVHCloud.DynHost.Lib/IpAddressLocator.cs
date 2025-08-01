@@ -9,7 +9,7 @@ namespace MadWorldNL.OVHCloud.DynHost.Lib;
 
 public class IpAddressLocator(HttpClient httpClient, IOptions<IpAddressSettings> ipAddressSettings, ILogger<IpAddressLocator> logger) : IIpdAddressLocator
 {
-    public IpAddressSettings IpAddressSettings { get; } = ipAddressSettings.Value;
+    private IpAddressSettings IpAddressSettings { get; } = ipAddressSettings.Value;
 
     public async Task<string> GetIpAddress()
     {

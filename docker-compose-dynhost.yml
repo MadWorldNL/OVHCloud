@@ -2,7 +2,7 @@
 name: ovh-cloud-dynhost
 services:
   web:
-    image: ghcr.io/madworldnl/ovhcloud-dynhost:v1.0.1
+    image: ghcr.io/madworldnl/ovhcloud-dynhost:v1.0.2
     container_name: ovhcloud-dynhost-web
     restart: always
     build:
